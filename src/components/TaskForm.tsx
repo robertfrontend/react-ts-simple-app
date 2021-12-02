@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState, useRef } from "react";
 import { BsPlusLg } from "react-icons/bs";
 import { Task } from '../interfaces/Task'
 
@@ -14,8 +14,8 @@ const intialState = {
 }
 
 export default function TaskForm({addNewTask}: Props) {
-
     const [task, setTask] = useState(intialState)
+    const inputTtile = useRef<HTMLInputElement>(null)
 
     const handleInputChange = ({ target: { name, value }}: HandleInputChage) => {
         setTask({...task, [name]: value})
@@ -25,6 +25,7 @@ export default function TaskForm({addNewTask}: Props) {
         e.preventDefault()
         addNewTask(task)
         setTask(intialState)
+        inputTtile.current?.focus()
     }
 
     return (
@@ -39,6 +40,8 @@ export default function TaskForm({addNewTask}: Props) {
                     className="form-control mb-3 rounded-0 shadow-none border-0"
                     onChange={handleInputChange}
                     value={task.title}
+                    autoFocus
+                    ref={inputTtile}
                 />
                 <textarea
                     name="description" rows={2}
